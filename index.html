@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hoha.ai - Chat, Research, and Create — Together</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #ffffff;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 14, 26, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #64ffda;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: #64ffda;
+        }
+
+        /* Enhanced Banner with Dynamic Slides */
+        .banner {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 20%, rgba(100, 255, 218, 0.15) 0%, transparent 70%),
+                        radial-gradient(circle at 70% 80%, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
+        }
+
+        .slide-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateX(100px);
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .slide.prev {
+            transform: translateX(-100px);
+        }
+
+        /* Slide 1 - Team Focus */
+        .slide-content {
+            max-width: 900px;
+            padding: 0 2rem;
+            z-index: 2;
+            position: relative;
+            text-align: center;
+        }
+
+        .slide-1 .slide-content {
+            text-align: center;
+        }
+
+        .slide-1 h1 {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #64ffda 0%, #38bdf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.3;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+        }
+
+        .slide-1 .subtitle {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: #e2e8f0;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        .slide-1 .tagline {
+            font-size: 1.8rem;
+            color: #64ffda;
+            font-weight: 600;
+            margin-top: 2rem;
+            text-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
+        }
+
+        /* Slide 2 - SiteMind Feature */
+        .slide-2 {
+            background: linear-gradient(135deg, rgba(100, 255, 218, 0.05) 0%, rgba(56, 189, 248, 0.05) 100%);
+        }
+
+        .slide-2 .slide-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            text-align: left;
+            max-width: 1100px;
+        }
+
+        .sitemind-intro {
+            animation: slideInLeft 1s ease-out;
+        }
+
+        .slide-2 h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ff6b6b 0%, #64ffda 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+            font-weight: 700;
+        }
+
+        .slide-2 .feature-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ffd93d 100%);
+            color: #0a0e1a;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            animation: pulse 2s infinite;
+        }
+
+        .slide-2 .description {
+            font-size: 1.3rem;
+            color: #e2e8f0;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .steps-container {
+            animation: slideInRight 1s ease-out;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            border-left: 4px solid #64ffda;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .step-item:hover {
+            transform: translateX(10px);
+            background: rgba(100, 255, 218, 0.1);
+            box-shadow: 0 10px 30px rgba(100, 255, 218, 0.2);
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, #64ffda 0%, #38bdf8 100%);
+            color: #0a0e1a;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-right: 1.5rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 15px rgba(100, 255, 218, 0.3);
+        }
+
+        .step-content h3 {
+            color: #64ffda;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .step-content p {
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+
+        /* Slide Indicators */
+        .slide-indicators {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 3;
+        }
+
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .indicator.active {
+            background: #64ffda;
+            transform: scale(1.3);
+            box-shadow: 0 0 20px rgba(100, 255, 218, 0.5);
+        }
+
+        .indicator.active::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border: 2px solid rgba(100, 255, 218, 0.3);
+            border-radius: 50%;
+            animation: ripple 2s infinite;
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 6rem 0;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+
+        .section h2 {
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            background: linear-gradient(135deg, #64ffda 0%, #38bdf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+
+        /* Challenge Section */
+        .challenge-intro {
+            text-align: center;
+            font-size: 1.3rem;
+            color: #94a3b8;
+            margin-bottom: 4rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .challenge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .challenge-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .challenge-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #64ffda 0%, #38bdf8 100%);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .challenge-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(100, 255, 218, 0.4);
+            box-shadow: 0 15px 40px rgba(100, 255, 218, 0.15);
+        }
+
+        .challenge-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .challenge-card h3 {
+            color: #64ffda;
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .challenge-card p {
+            color: #cbd5e1;
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+
+        /* Innovation Section */
+        .innovation-intro {
+            text-align: center;
+            font-size: 1.4rem;
+            color: #64ffda;
+            margin-bottom: 4rem;
+            font-weight: 300;
+            font-style: italic;
+        }
+
+        .innovation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .innovation-card {
+            background: linear-gradient(135deg, rgba(100, 255, 218, 0.08) 0%, rgba(56, 189, 248, 0.08) 100%);
+            border: 1px solid rgba(100, 255, 218, 0.3);
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .innovation-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(100, 255, 218, 0.1), transparent);
+            animation: rotate 4s linear infinite;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .innovation-card:hover::before {
+            opacity: 1;
+        }
+
+        .innovation-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(100, 255, 218, 0.2);
+        }
+
+        .innovation-card .emoji {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: block;
+            filter: drop-shadow(0 4px 8px rgba(100, 255, 218, 0.3));
+        }
+
+        .innovation-card h3 {
+            color: #64ffda;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            position: relative;
+            z-index: 2;
+        }
+
+        .innovation-card p {
+            color: #cbd5e1;
+            line-height: 1.7;
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Solutions Section */
+        .solution-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .tab-button {
+            background: linear-gradient(135deg, rgba(100, 255, 218, 0.1) 0%, rgba(56, 189, 248, 0.1) 100%);
+            border: 2px solid rgba(100, 255, 218, 0.3);
+            color: #64ffda;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            font-weight: 600;
+            font-size: 1.1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tab-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #64ffda 0%, #38bdf8 100%);
+            transition: left 0.4s ease;
+            z-index: -1;
+        }
+
+        .tab-button.active::before,
+        .tab-button:hover::before {
+            left: 0;
+        }
+
+        .tab-button.active,
+        .tab-button:hover {
+            color: #0a0e1a;
+            border-color: #64ffda;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(100, 255, 218, 0.3);
+        }
+
+        .solution-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .solution-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 2rem;
+            border-left: 4px solid #64ffda;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .solution-item:hover {
+            transform: translateX(8px);
+            background: rgba(100, 255, 218, 0.05);
+            box-shadow: 0 8px 25px rgba(100, 255, 218, 0.1);
+        }
+
+        .solution-item h4 {
+            color: #64ffda;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .solution-item p {
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+
+        /* Get Started Section */
+        .get-started-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .version-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .version-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #64ffda 0%, #38bdf8 100%);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .version-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(100, 255, 218, 0.4);
+            box-shadow: 0 20px 50px rgba(100, 255, 218, 0.15);
+        }
+
+        .version-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .version-card h3 {
+            color: #64ffda;
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin: 2rem 0;
+            text-align: left;
+        }
+
+        .feature-list li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #64ffda;
+            font-weight: bold;
+        }
+
+        .download-links {
+            margin-top: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .download-links a {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #64ffda 0%, #38bdf8 100%);
+            color: #0a0e1a;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-links a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #38bdf8 0%, #64ffda 100%);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .download-links a:hover::before {
+            left: 0;
+        }
+
+        .download-links a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(100, 255, 218, 0.4);
+        }
+
+        /* Contact Section */
+        .contact {
+            background: linear-gradient(135deg, rgba(100, 255, 218, 0.1) 0%, rgba(56, 189, 248, 0.1) 100%);
+            border-radius: 20px;
+            padding: 4rem;
+            text-align: center;
+            margin: 4rem 0;
+            border: 1px solid rgba(100, 255, 218, 0.3);
+        }
+
+        .contact h2 {
+            margin-bottom: 2rem;
+        }
+
+        .contact p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: #cbd5e1;
+        }
+
+        .contact-email {
+            font-size: 1.4rem;
+            color: #64ffda;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .contact-email::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #64ffda;
+            transition: width 0.3s ease;
+        }
+
+        .contact-email:hover::after {
+            width: 100%;
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes ripple {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes slideInLeft {
+            from { transform: translateX(-50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .slide-1 h1 {
+                font-size: 2.5rem;
+            }
+            
+            .slide-2 .slide-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+                text-align: center;
+            }
+            
+            .slide-2 h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .solution-tabs {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+            
+            .get-started-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 4rem 0;
+            }
+
+            .section h2 {
+                font-size: 2.2rem;
+            }
+        }
+
+        /* Scroll Animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="URL://logo.hoha.ai/logo.png" alt="Hoha.ai" style="height: 32px; vertical-align: middle; margin-right: 8px;">
+                Hoha.ai
+            </div>
+            <ul class="nav-links">
+                <li><a href="#banner">Home</a></li>
+                <li><a href="#challenge">Challenge</a></li>
+                <li><a href="#innovations">Innovations</a></li>
+                <li><a href="#solutions">Solutions</a></li>
+                <li><a href="#get-started">Get Started</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Enhanced Banner -->
+    <section id="banner" class="banner">
+        <div class="slide-container">
+            <!-- Slide 1: Main Value Proposition -->
+            <div class="slide slide-1 active">
+                <div class="slide-content">
+                    <h1>Hoha Intelligent Workgroup</h1>
+                    <p class="subtitle">We work in teams. We learn in groups. We solve problems together.<br>So why do we use AI alone?</p>
+                    <div class="tagline">Chat, Research, and Create — Together</div>
+                </div>
+            </div>
+
+            <!-- Slide 2: SiteMind Feature -->
+            <div class="slide slide-2">
+                <div class="slide-content">
+                    <div class="sitemind-intro">
+                        <div class="feature-badge">Coming Soon</div>
+                        <h1>SiteMind</h1>
+                        <p class="description">Transform your website visitors into thriving AI-powered communities in just three simple steps.</p>
+                    </div>
+                    <div class="steps-container">
+                        <div class="step-item">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h3>Instant Connection</h3>
+                                <p>Enable instant chat with every visitor on any page of your website</p>
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h3>AI-Powered Guidance</h3>
+                                <p>Guide visitors to your Hoha Site Group with intelligent RAG technology</p>
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h3>Community Building</h3>
+                                <p>Build stable, persistent community hubs that grow and evolve</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slide-indicators">
+            <div class="indicator active" onclick="currentSlide(1)"></div>
+            <div class="indicator" onclick="currentSlide(2)"></div>
+        </div>
+    </section>
+
+    <!-- Challenge Section -->
+    <section id="challenge" class="section fade-in">
+        <h2>The Challenge</h2>
+        <p class="challenge-intro">Current AI tools create silos instead of synergy, limiting the true potential of collaborative intelligence.</p>
+        
+        <div class="challenge-grid">
+            <div class="challenge-card">
+                <h3>Growing Gaps</h3>
+                <p>One-on-one AI interactions mean everyone's results depend solely on their individual skills, widening the gap between team members and reducing overall effectiveness.</p>
+            </div>
+            <div class="challenge-card">
+                <h3>Lost Collective Power</h3>
+                <p>Team knowledge and experience lack a centralized hub, leading to inefficient workflows, scattered information management, and missed opportunities for collaboration.</p>
+            </div>
+            <div class="challenge-card">
+                <h3>Vanishing Insights</h3>
+                <p>Brilliant brainstorming sessions and productive conversations disappear the moment meetings end, with no systematic way to capture and build upon valuable insights.</p>
+            </div>
+            <div class="challenge-card">
+                <h3>Wasted Traffic</h3>
+                <p>Why let website visitors leave after a single interaction? The challenge is transforming one-time chats into valuable, self-growing communities that provide lasting engagement.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Innovations Section -->
+    <section id="innovations" class="section fade-in">
+        <h2>Our Innovations</h2>
+        <p class="innovation-intro">Where human collaboration meets AI evolution</p>
+        
+        <div class="innovation-grid">
+            <div class="innovation-card">
+                <span class="emoji">🤝</span>
+                <h3>True Team Intelligence</h3>
+                <p>Multi-participant conversations with Hoha AI create a seamless blend where human collaboration meets artificial intelligence in perfect harmony.</p>
+            </div>
+            <div class="innovation-card">
+                <span class="emoji">🧠</span>
+                <h3>Smart Knowledge Silos</h3>
+                <p>Independent knowledge bases per team with enterprise-grade RAG efficiency, advanced security protocols, and flexible localized deployment options.</p>
+            </div>
+            <div class="innovation-card">
+                <span class="emoji">📈</span>
+                <h3>Continuous Learning</h3>
+                <p>Hoha evolves with your team, automatically extracting insights from every conversation and transforming new members into instant domain experts.</p>
+            </div>
+            <div class="innovation-card">
+                <span class="emoji">🌐</span>
+                <h3>SiteMind Technology</h3>
+                <p>Convert site visitors into AI-powered communities instantly—transform fleeting clicks into loyal, engaged groups that boost retention and value.</p>
+            </div>
+            <div class="innovation-card">
+                <span class="emoji">🛡️</span>
+                <h3>Enterprise-Ready</h3>
+                <p>Complete management suite featuring security monitoring, multi-language support, flexible LLM integration, and comprehensive administrative controls.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Industry Solutions -->
+    <section id="solutions" class="section fade-in">
+        <h2>Industry Solutions</h2>
+        
+        <div class="solution-tabs">
+            <button class="tab-button active" onclick="showSolution('enterprise')">Enterprise Applications</button>
+            <button class="tab-button" onclick="showSolution('education')">Education Applications</button>
+        </div>
+
+        <div id="enterprise-content" class="solution-content">
+            <div class="solution-item">
+                <h4>Management Excellence</h4>
+                <p>Transform decision-making with AI-powered report aggregation and analysis (30% efficiency improvement)</p>
+            </div>
+            <div class="solution-item">
+                <h4>Finance Operations</h4>
+                <p>Streamline financial workflows with advanced NL2SQL task handling (80% process optimization)</p>
+            </div>
+            <div class="solution-item">
+                <h4>R&D Collaboration</h4>
+                <p>Accelerate development with group debugging sessions involving developers and testers (50% faster resolution)</p>
+            </div>
+            <div class="solution-item">
+                <h4>Customer Support</h4>
+                <p>Deploy intelligent multi-tier response systems for superior customer experience (>50% response time reduction)</p>
+            </div>
+            <div class="solution-item">
+                <h4>Sales Intelligence</h4>
+                <p>Enhance deal closure with AI-assisted project analysis and strategic insights (20% higher win rate)</p>
+            </div>
+        </div>
+
+        <div id="education-content" class="solution-content" style="display: none;">
+            <div class="solution-item">
+                <h4>Teacher Empowerment</h4>
+                <p>Revolutionize education with collaborative lesson planning and resource sharing (50% prep time reduction)</p>
+            </div>
+            <div class="solution-item">
+                <h4>Student Success</h4>
+                <p>Provide 24/7 personalized tutoring and learning support for enhanced academic performance (50% efficiency gain)</p>
+            </div>
+            <div class="solution-item">
+                <h4>Parent Engagement</h4>
+                <p>Enable targeted reinforcement learning and family involvement in education (60% increased activity time)</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Get Started Section -->
+    <section id="get-started" class="section fade-in">
+        <h2>Get Started Today</h2>
+        
+        <div class="get-started-grid">
+            <div class="version-card">
+                <h3>Open Source Edition</h3>
+                <p>Experience Hoha's collaborative AI through our web platform. Perfect for teams getting started with intelligent workgroup technology.</p>
+                <div class="download-links">
+                    <a href="https://github.com/Hoha" target="_blank">GitHub Repository</a>
+                    <a href="http://111.198.75.180:18123/#/" target="_blank">Live Demo</a>
+                </div>
+            </div>
+
+            <div class="version-card">
+                <h3>Commercial Edition</h3>
+                <p>Full-featured enterprise solution with advanced capabilities for professional teams and organizations.</p>
+                <ul class="feature-list">
+                    <li>Administrative Console</li>
+                    <li>SiteMind Technology</li>
+                    <li>Advanced NL2SQL</li>
+                    <li>Complete Knowledge Base Management</li>
+                    <li>LLM Security Monitoring</li>
+                    <li>Multi-language Support</li>
+                    <li>On-premise Deployment</li>
+                </ul>
+            </div>
+
+            <div class="version-card">
+                <h3>Client Applications</h3>
+                <p>Native applications for seamless cross-platform collaboration and productivity.</p>
+                <div class="download-links">
+                    <a href="http://120.196.67.248:18123/install/windows/Deeptalk-latest.zip">Windows</a>
+                    <a href="http://120.196.67.248:18123/install/apk/Deeptalk-latest.apk">Android</a>
+                    <a href="http://120.196.67.248:18123/install/mac/DeepTalk-lastest.dmg">macOS</a>
+                    <a href="#" style="opacity: 0.6; cursor: not-allowed;">iOS (Coming Soon)</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Business Collaboration -->
+    <section id="contact" class="section fade-in">
+        <div class="contact">
+            <h2>Business Collaboration</h2>
+            <p>Global partnership opportunities available • Custom OEM services • Enterprise solutions tailored to your needs</p>
+            <a href="mailto:hoha@leoyoung.tech" class="contact-email">hoha@leoyoung.tech</a>
+        </div>
+    </section>
+
+    <script>
+        // Enhanced Banner Carousel
+        let slideIndex = 1;
+        let slideInterval;
+        
+        function showSlide(n) {
+            let slides = document.getElementsByClassName("slide");
+            let indicators = document.getElementsByClassName("indicator");
+            
+            if (n > slides.length) {slideIndex = 1}
+            if (n < 1) {slideIndex = slides.length}
+            
+            // Remove all active classes
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove("active", "prev");
+            }
+            
+            for (let i = 0; i < indicators.length; i++) {
+                indicators[i].classList.remove("active");
+            }
+            
+            // Set previous slide
+            if (slideIndex > 1) {
+                slides[slideIndex-2].classList.add("prev");
+            } else {
+                slides[slides.length-1].classList.add("prev");
+            }
+            
+            // Set active slide and indicator
+            slides[slideIndex-1].classList.add("active");
+            indicators[slideIndex-1].classList.add("active");
+        }
+
+        function currentSlide(n) {
+            clearInterval(slideInterval);
+            showSlide(slideIndex = n);
+            startAutoSlide();
+        }
+
+        function nextSlide() {
+            showSlide(slideIndex += 1);
+        }
+
+        function startAutoSlide() {
+            slideInterval = setInterval(nextSlide, 7000);
+        }
+
+        // Initialize slides
+        showSlide(slideIndex);
+        startAutoSlide();
+
+        // Solution Tabs
+        function showSolution(type) {
+            const buttons = document.querySelectorAll('.tab-button');
+            const contents = document.querySelectorAll('.solution-content');
+            
+            buttons.forEach(btn => btn.classList.remove('active'));
+            contents.forEach(content => content.style.display = 'none');
+            
+            event.target.classList.add('active');
+            document.getElementById(type + '-content').style.display = 'grid';
+        }
+
+        // Scroll Animation Observer
+        function observeElements() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            document.querySelectorAll('.fade-in').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // Smooth Scrolling for Navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            observeElements();
+            
+            // Add stagger animation to grid items
+            const cards = document.querySelectorAll('.challenge-card, .innovation-card, .solution-item');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+
+        // Pause auto-slide on hover
+        const banner = document.querySelector('.banner');
+        banner.addEventListener('mouseenter', () => clearInterval(slideInterval));
+        banner.addEventListener('mouseleave', startAutoSlide);
+    </script>
+</body>
+</html>
